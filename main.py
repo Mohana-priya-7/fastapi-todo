@@ -22,14 +22,14 @@ def create_todo(todo: TodoCreate,db:Session=Depends(get_db)):
 @app.get("/todos/",response_model=list[TodoSchema])
 def read_todos(db:Session=Depends(get_db)):
     return db.query(TodoModel).all()
-#GET /todos/{id} single todo by id
-@app.get("/todos/{id}",response_model=TodoSchema)
+#GET /todos/{todo_id} single todo by id
+@app.get("/todos/{todo_id}",response_model=TodoSchema)
 def read_todo(todo_id:int,db:Session=Depends(get_db)):
     r=db.query(TodoModel).filter(TodoModel.id==todo_id).first()
     if not r:
         raise HTTPException(status_code=404,detail="Todo not found")
     return r
-@app.put("/todos/{todos_id}",response_model=TodoSchema)
+@app.put("/todos/{todo_id}",response_model=TodoSchema)
 def update_todo(todo_id:int,updated_todo:TodoCreate,db:Session=Depends(get_db)):
     r=db.query(TodoModel).filter(TodoModel.id==todo_id).first()
     if not r:
